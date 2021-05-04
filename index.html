@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Hadir | DMED</title>
+    <title>Daftar Hadir | PT ABC</title>
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <section>
@@ -29,42 +30,103 @@
                 </div>
                 <div>
                     <ul class="sci">
-                        <li><a href="#"><img src="img/facebook.png" alt=""></a></li>
-                        <li><a href="#"><img src="img/twitter.png" alt=""></a></li>
-                        <li><a href="#"><img src="img/instagram.png" alt=""></a></li>
+                        <li><a href="https://web.facebook.com/" target="_blank"><img src="img/facebook.png" alt=""></a></li>
+                        <li><a href="https://twitter.com/" target="_blank"><img src="img/twitter.png" alt=""></a></li>
+                        <li><a href="https://www.instagram.com/" target="_blank"><img src="img/instagram.png" alt=""></a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="contactForm">
-                <h2>Daftar Hadir Rapat</h2>
-                <div class="form">
-                    <div class="inputBox">
-                        <input type="text" required>
-                        <span>Nama Lengkap</span>
-                    </div>
-                    <div class="inputBox">
-                        <input type="text" required>
-                        <span>Instansi</span>
-                    </div>
-                    <div class="inputBox">
-                        <input type="text" required>
-                        <span>Jabatan</span>
-                    </div>
-                    <div class="inputBox">
-                        <input type="text" required>
-                        <span>Nomor Hp/WA</span>
-                    </div>
-                    <div class="inputBox">
-                        <input type="email" required>
-                        <span>Email</span>
-                    </div>
-                    <div class="inputBox button">
-                        <input type="submit" value="Kirim">
+
+                <!-- Alert -->
+                <div class="bungkus d-none my-alert">
+                    <div class="alert hide" onclick="this.parentElement.style.display='none';"&times;>
+                        <span class="msg"><strong>Terima Kasih !</strong> Pesan sudah terkirim</span>
+                        <div class="close-btn" id="btn">
+                            <span><img src="img/close.png" alt=""></span>
+                        </div>
                     </div>
                 </div>
+
+                <h2>Daftar Hadir Rapat</h2>
+                <form name="submit-to-google-sheet">
+                    <div class="form">
+                        <div class="inputBox">
+                            <input type="text" name="nama lengkap" required>
+                            <span>Nama Lengkap</span>
+                        </div>
+                        <div class="inputBox">
+                            <input type="text" name="instansi" required>
+                            <span>Instansi</span>
+                        </div>
+                        <div class="inputBox">
+                            <input type="text" name="jabatan" required>
+                            <span>Jabatan</span>
+                        </div>
+                        <div class="inputBox">
+                            <input type="text" name="no hp" required>
+                            <span>Nomor Hp/WA</span>
+                        </div>
+                        <div class="inputBox">
+                            <input type="email" name="email" required>
+                            <span>Email</span>
+                        </div>
+                        <div class="inputBox button">
+                            <button type="submit" class="btn-kirim">Kirim</button>
+                            <button class="btn-loading d-none" type="button">
+                                <span style="--i:1"></span>
+                                <span style="--i:2"></span>
+                                <span style="--i:3"></span>
+                                <span style="--i:4"></span>
+                                <span style="--i:5"></span>
+                                <span style="--i:6"></span>
+                                <span style="--i:7"></span>
+                                <span style="--i:8"></span>
+                                <span style="--i:9"></span>
+                                <span style="--i:10"></span>
+                                <span style="--i:11"></span>
+                                <span style="--i:12"></span>
+                                <span style="--i:13"></span>
+                                <span style="--i:14"></span>
+                                <span style="--i:15"></span>
+                                <span style="--i:16"></span>
+                                <span style="--i:17"></span>
+                                <span style="--i:18"></span>
+                                <span style="--i:19"></span>
+                                <span style="--i:20"></span>Loading
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
+
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwAb-VAdia2ryj6vJcW5tQePZNpjnUw2j-29Sv9g9moFO-bIVHjSyI6Xqj45CGGv8w/exec'
+        const form = document.forms['submit-to-google-sheet'];
+        const btnKirim = document.querySelector('.btn-kirim');
+        const btnLoading = document.querySelector('.btn-loading');
+        const myAlert = document.querySelector('.my-alert');
+      
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          btnLoading.classList.toggle('d-none');
+          btnKirim.classList.toggle('d-none');
+
+          fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                btnLoading.classList.toggle('d-none');
+                btnKirim.classList.toggle('d-none');
+                myAlert.classList.toggle('d-none');
+                // Reset Form
+                form.reset();
+                console.log('Success!', response)})
+            .catch(error => console.error('Error!', error.message))
+        })
+      </script>
+
 </body>
 </html>
